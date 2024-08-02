@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("v1/api/feed")
+@RequestMapping("v1/feed")
 @Slf4j
 public class FeedController {
 
