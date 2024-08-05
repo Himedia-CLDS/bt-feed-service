@@ -1,15 +1,22 @@
 # bt-feed-service
 
-1. Datasource
-  Mysql Local Test용 DB입니다 추후에 RDS로 변경할 예정입니다.
-  Test가 필요한 경우 무선 랜 IPv4 66으로 접속해주세요 !
+1. datasource.yml
   ```
-        url: jdbc:mysql://...66:3306/feed_schema
-        username: test
-        password: test
+        url: jdbc:mysql://.../feed_schema
+        name: ...
+        password: ...
   ```
+
+2. bootrun
+
+```
+    git clone
+    cd bt-feed-service/
+    ./gradlew build
+    ./gradlew bootrun
+```
   
-2. api test
+3. api method
 
    | 메서드 | URL                                                    | 설명             |
    |-----|--------------------------------------------------------|----------------|
