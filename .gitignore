@@ -4,6 +4,7 @@
 build/
 Log/
 logs/
+datasource.yml
 .DS_Store
 .env
 .class
