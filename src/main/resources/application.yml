@@ -1,8 +1,11 @@
 spring:
+    config:
+        import: "classpath:datasource.yml"
     datasource:
-        url: jdbc:mysql://127.0.0.1:3306/feed_schema
-        username: test
-        password: test
+        url: ${url}
+#       username 사용 시 host name이 전달됨... name으로 명시
+        username: ${name}
+        password: ${password}
         driver-class-name: com.mysql.cj.jdbc.Driver
 
     jpa:
