@@ -27,6 +27,7 @@ public class Feed {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
+    private boolean isLiked; //1-참, 0-거짓
 
     @Override
     public String toString() {

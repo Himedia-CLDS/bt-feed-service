@@ -1,12 +1,20 @@
 spring:
     config:
-        import: "classpath:datasource.yml"
+        import:
+            - "classpath:config.yml"
     datasource:
         url: ${url}
 #       username 사용 시 host name이 전달됨... name으로 명시
         username: ${name}
         password: ${password}
         driver-class-name: com.mysql.cj.jdbc.Driver
+    aws:
+        access-key-cognito: ${aws.access-key-cognito}
+        secret-key-cognito: ${aws.secret-key-cognito}
+        cognito:
+            userPoolId: ${aws.cognito.userPoolId}
+            region: ${aws.cognito.region}
+
 
     jpa:
         hibernate:

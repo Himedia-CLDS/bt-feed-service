@@ -1,13 +1,10 @@
 package com.cdls.bottletalk.feed.controller;
 
 import com.cdls.bottletalk.feed.model.FeedDTO;
+import com.cdls.bottletalk.feed.model.FeedLike;
 import com.cdls.bottletalk.feed.service.FeedService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,7 +22,12 @@ public class FeedController {
     @GetMapping
     public List<FeedDTO> getList(@RequestParam(required = false) String userId){
         List<FeedDTO> feedList = service.findAllFeed(userId);
-
         return feedList;
+    }
+
+    @PutMapping("like")
+    public FeedLike like(@RequestBody FeedLike feedLike){
+        FeedLike likeDto = service.likeFeed(feedLike);
+        return likeDto;
     }
 }
