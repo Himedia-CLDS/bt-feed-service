@@ -8,6 +8,7 @@ import com.cdls.bottletalk.feed.repository.FeedRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,26 @@ public class FeedService {
         return feedList.stream().map(FeedDTO::fromEntity).collect(Collectors.toList());
     }
 
+    public void insertFeed(FeedDTO feedDTO) {
+        Feed feed = Feed.fromDTO(feedDTO);
+        repository.save(feed);
+    }
+
+    @Transactional
+    public FeedDTO updateFeed(FeedDTO feedDTO) {
+        Feed feed = repository.findByIdAndUserId(feedDTO.getId(), feedDTO.getUserId());
+        feed.updateFeed(feedDTO.getContent(), feedDTO.getImg(), LocalDateTime.now());
+        repository.save(feed);
+        return new FeedDTO(feed);
+    }
+
+    public FeedDTO deleteFeed(FeedDTO feedDTO) {
+        Feed feed = repository.findByIdAndUserId(feedDTO.getId(), feedDTO.getUserId());
+        feed.deleteFeed(LocalDateTime.now());
+        repository.save(feed);
+        return new FeedDTO(feed);
+    }
+
     @Transactional
     public FeedLike likeFeed(FeedLike likeDto) {
         FeedLike tempDto = likeRepository.findByFeedIdAndUserId(likeDto.getFeedId(), likeDto.getUserId());
@@ -39,5 +60,10 @@ public class FeedService {
         }
         likeRepository.save(tempDto);
         return tempDto;
+    }
+
+    public List<FeedDTO> findLikedFeed(String userId) {
+        List<Feed> likeList = repository.findAllByIdAndIsLiked(userId);
+        return likeList.stream().map(FeedDTO::fromEntity).collect(Collectors.toList());
     }
 }

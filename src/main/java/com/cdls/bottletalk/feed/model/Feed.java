@@ -27,7 +27,28 @@ public class Feed {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
-    private boolean isLiked; //1-참, 0-거짓
+
+    public Feed(FeedDTO feedDTO) {
+        this.id = feedDTO.getId();
+        this.userId = feedDTO.getUserId();
+        this.content = feedDTO.getContent();
+        this.img = feedDTO.getImg();
+        this.createdAt = feedDTO.getCreatedAt();
+    }
+
+    public void updateFeed(String content, String img, LocalDateTime updatedAt){
+        this.content = content;
+        this.img = img;
+        this.updatedAt = updatedAt;
+    }
+
+    public void deleteFeed(LocalDateTime deletedAt){
+        this.deletedAt = deletedAt;
+    }
+
+    public static Feed fromDTO(FeedDTO feedDTO) {
+        return new Feed(feedDTO);
+    }
 
     @Override
     public String toString() {
