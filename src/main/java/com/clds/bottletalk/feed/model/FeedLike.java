@@ -1,4 +1,4 @@
-package com.cdls.bottletalk.feed.model;
+package com.clds.bottletalk.feed.model;
 
 import jakarta.persistence.*;
 import lombok.*;

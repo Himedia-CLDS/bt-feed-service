@@ -1,12 +1,13 @@
-package com.cdls.bottletalk.feed.service;
+package com.clds.bottletalk.feed.service;
 
-import com.cdls.bottletalk.feed.model.Feed;
-import com.cdls.bottletalk.feed.model.FeedDTO;
-import com.cdls.bottletalk.feed.model.FeedLike;
-import com.cdls.bottletalk.feed.repository.FeedLikeRepository;
-import com.cdls.bottletalk.feed.repository.FeedRepository;
+import com.clds.bottletalk.feed.model.Feed;
+import com.clds.bottletalk.feed.model.FeedDTO;
+import com.clds.bottletalk.feed.model.FeedLike;
+import com.clds.bottletalk.feed.repository.FeedLikeRepository;
+import com.clds.bottletalk.feed.repository.FeedRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,6 +31,11 @@ public class FeedService {
         return feedList.stream().map(FeedDTO::fromEntity).collect(Collectors.toList());
     }
 
+    public FeedDTO findFeed(Long id, String userId) {
+        Feed feed = repository.findByIdAndUserId(id, userId);
+        return FeedDTO.fromEntity(feed);
+    }
+
     public void insertFeed(FeedDTO feedDTO) {
         Feed feed = Feed.fromDTO(feedDTO);
         repository.save(feed);
@@ -38,7 +44,7 @@ public class FeedService {
     @Transactional
     public FeedDTO updateFeed(FeedDTO feedDTO) {
         Feed feed = repository.findByIdAndUserId(feedDTO.getId(), feedDTO.getUserId());
-        feed.updateFeed(feedDTO.getContent(), feedDTO.getImg(), LocalDateTime.now());
+        feed.updateFeed(feedDTO.getContent(), feedDTO.getOrgImgName(), feedDTO.getReImgName(), LocalDateTime.now());
         repository.save(feed);
         return new FeedDTO(feed);
     }

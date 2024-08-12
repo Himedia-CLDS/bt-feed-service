@@ -1,4 +1,4 @@
-package com.cdls.bottletalk.feed.model;
+package com.clds.bottletalk.feed.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +23,8 @@ public class Feed {
     private Long id;
     private String userId;
     private String content;
-    private String img;
+    private String orgImgName;
+    private String reImgName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
@@ -32,13 +33,15 @@ public class Feed {
         this.id = feedDTO.getId();
         this.userId = feedDTO.getUserId();
         this.content = feedDTO.getContent();
-        this.img = feedDTO.getImg();
+        this.orgImgName = feedDTO.getOrgImgName();
+        this.reImgName = feedDTO.getReImgName();
         this.createdAt = feedDTO.getCreatedAt();
     }
 
-    public void updateFeed(String content, String img, LocalDateTime updatedAt){
+    public void updateFeed(String content, String orgImgName, String reImgName, LocalDateTime updatedAt){
         this.content = content;
-        this.img = img;
+        this.orgImgName = orgImgName;
+        this.reImgName = reImgName;
         this.updatedAt = updatedAt;
     }
 
@@ -56,7 +59,7 @@ public class Feed {
                 "id=" + id +
                 ", userId='" + userId + '\'' +
                 ", content='" + content + '\'' +
-                ", img='" + img + '\'' +
+                ", reImgName='" + reImgName + '\'' +
                 '}';
     }
 }

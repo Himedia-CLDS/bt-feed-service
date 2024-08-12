@@ -1,4 +1,4 @@
-package com.cdls.bottletalk.feed.model;
+package com.clds.bottletalk.feed.model;
 
 import lombok.Data;
 
@@ -10,7 +10,8 @@ public class FeedDTO {
     private Long id;
     private String userId;
     private String content;
-    private String img;
+    private String orgImgName;
+    private String reImgName;
     private LocalDateTime createdAt;
 
     public FeedDTO(){
@@ -21,7 +22,8 @@ public class FeedDTO {
         this.id = feed.getId();
         this.userId = feed.getUserId();
         this.content = feed.getContent();
-        this.img = feed.getImg();
+        this.orgImgName = feed.getOrgImgName();
+        this.reImgName = feed.getReImgName();
         this.createdAt = feed.getCreatedAt();
     }
 
