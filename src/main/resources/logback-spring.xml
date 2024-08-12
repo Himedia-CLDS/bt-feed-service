@@ -6,14 +6,11 @@
     <property name="log_pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
     <property name="log_path_local" value="C:\himedia\logs\feed\" />
     <property name="log_path_ec2" value="/home/ec2-user/bottle-talk/logs/feed/" />
-    <!-- 특정 문자로 필터링(message안에있는 문자열 확인)  -->
-    <property name="feed_filter" value="import ch.qos.logback.classic.spi.ILoggingEvent;
-                    return event.getMessage().contains('Feed');" />
 
     <!-- Rolling File Appender -->
     <appender name="RollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${log_path_ec2}feed_action-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${log_path_local}feed_action-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <!-- 파일 최대 크기 -->
             <maxFileSize>10MB</maxFileSize>
             <!-- 최대 보관할 기간 -->
@@ -25,7 +22,10 @@
         <!--  필터링  -->
         <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
             <evaluator>
-                <expression>${feed_filter}</expression>
+                <expression>
+                    import ch.qos.logback.classic.spi.ILoggingEvent;
+                    return event.getMessage().contains("Feed");
+                </expression>
             </evaluator>
             <OnMismatch>DENY</OnMismatch>
             <OnMatch>ACCEPT</OnMatch>
