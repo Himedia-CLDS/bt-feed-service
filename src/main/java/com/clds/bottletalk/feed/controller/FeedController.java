@@ -17,10 +17,13 @@ import java.util.List;
 public class FeedController {
 
     private FeedService service;
+    private FileConfig fileConfig;
 
-    public FeedController(FeedService service) {
+    public FeedController(FeedService service, FileConfig fileConfig) {
         this.service = service;
+        this.fileConfig = fileConfig;
     }
+
 
     @GetMapping
     public List<FeedDTO> getList(@RequestParam(name="userId", required = false) String userId){
@@ -37,7 +40,7 @@ public class FeedController {
     @PostMapping("insert")
     public void insert(@RequestPart FeedDTO feedDTO, @RequestPart MultipartFile file) throws Exception {
         feedDTO.setCreatedAt(LocalDateTime.now());
-        feedDTO.setReImgName(FileConfig.saveFile(feedDTO.getUserId(), file).getName());
+        feedDTO.setReImgName(fileConfig.saveFile(feedDTO.getUserId(), file).getName());
         feedDTO.setOrgImgName(file.getOriginalFilename());
         service.insertFeed(feedDTO);
         String json = String.format("{\"action\":\"FeedInsert\", \"user_id\": \"%s\"}", feedDTO.getUserId());
@@ -48,8 +51,8 @@ public class FeedController {
     public FeedDTO update(@RequestPart FeedDTO feedDTO, @RequestPart MultipartFile file) throws Exception{
         FeedDTO feed = service.findFeed(feedDTO.getId(), feedDTO.getUserId());
         if(file != null){
-            FileConfig.deleteFile(feed.getReImgName());
-            feedDTO.setReImgName(FileConfig.saveFile(feed.getUserId(), file).getName());
+            fileConfig.deleteFile(feed.getReImgName());
+            feedDTO.setReImgName(fileConfig.saveFile(feed.getUserId(), file).getName());
             feedDTO.setOrgImgName(file.getOriginalFilename());
         }
 
@@ -67,7 +70,7 @@ public class FeedController {
         String isDelete = "";
         FeedDTO deleteFeed = service.deleteFeed(feedDTO);
         if(deleteFeed.getReImgName() != null){
-            isDelete = String.format("%b", FileConfig.deleteFile(deleteFeed.getReImgName()));
+            isDelete = String.format("%b", fileConfig.deleteFile(deleteFeed.getReImgName()));
         } else {
             isDelete = "삭제할 파일 없음";
         }

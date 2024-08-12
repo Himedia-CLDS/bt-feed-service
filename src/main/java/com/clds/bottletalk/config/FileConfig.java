@@ -1,17 +1,20 @@
 package com.clds.bottletalk.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.UUID;
 
+@Service
 public class FileConfig {
 
-    private static String linuxPath = "home" + File.separator + "ec2-uesr" + File.separator + "bottletalk" + File.separator + "files";
-    private static String windowsPath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "files";
+    private String linuxPath = "home" + File.separator + "ec2-user" + File.separator + "bottletalk" + File.separator + "files";
+    private String windowsPath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "files";
 
-    public static File saveFile(String userId, MultipartFile file) throws Exception {
+    public File saveFile(String userId, MultipartFile file) throws Exception {
 
         String os = System.getProperty("os.name");
         UUID uuid = UUID.randomUUID();
@@ -33,7 +36,7 @@ public class FileConfig {
         return saveFile;
     }
 
-    public static boolean deleteFile(String fileName) throws Exception {
+    public boolean deleteFile(String fileName) throws Exception {
         String os = System.getProperty("os.name");
         String filePath;
 
