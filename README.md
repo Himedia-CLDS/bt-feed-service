@@ -33,3 +33,18 @@ aws:
    | PUT| /v1/feed/delete                 | 피드 삭제     |
    | PUT | /v1/feed/like                  | 피드 좋아요기능   |
     | POST| /v1/feed/like                 |좋아요한 피드목록 조회|
+
+4. api 작동
+   ```
+     GET /v1/feed
+     GET /v1/feed?userId=
+     POST /v1/feed/insert
+         form-data : application/json {"userId": "", "content": ""}, "file" : ""
+     PUT /v1/feed/update
+         form-data : application/json {"userId": "","id": "", "content": ""}, "file" : ""
+     PUT /v1/feed/delete
+         JSON : {"id":"", "userId":""}
+     GET /v1/feed/like?userId=
+     PUT /v1/feed/like
+         JSON : {"feedId":"", "userId":""}
+   ```
