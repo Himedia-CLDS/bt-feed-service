@@ -4,13 +4,13 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
     <property name="log_pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
-    <property name="log_path_local" value="C:\himedia\logs\feed\" />
-    <property name="log_path_ec2" value="/home/ec2-user/bottle-talk/logs/feed/" />
+    <springProperty name="path_local" source="spring.logback-setting.path-local" />
+    <springProperty name="path_ec2" source="spring.logback-setting.path-ec2" />
 
     <!-- Rolling File Appender -->
     <appender name="RollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${log_path_local}feed_action-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${path_ec2}feed_action-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <!-- 파일 최대 크기 -->
             <maxFileSize>10MB</maxFileSize>
             <!-- 최대 보관할 기간 -->
