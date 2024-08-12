@@ -14,4 +14,6 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
             "where f.id = l.feed_id and l.user_id = :user_id and l.is_liked = 1",
             nativeQuery = true)
     List<Feed> findAllByIdAndIsLiked(@Param("user_id") String userId);
+
+    List<Feed> findByUserId(String userId);
 }

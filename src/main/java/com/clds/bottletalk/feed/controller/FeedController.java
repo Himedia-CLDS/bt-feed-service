@@ -23,12 +23,14 @@ public class FeedController {
     }
 
     @GetMapping
-    public List<FeedDTO> getList(@RequestParam(required = false) String userId){
+    public List<FeedDTO> getList(@RequestParam(name="userId", required = false) String userId){
         List<FeedDTO> feedList = service.findAllFeed(userId);
-        String json = String.format(
-          "{\"action\":\"FeedAllList\", \"user_id\": \"%s\"}", userId
-        );
-        log.info(json);
+        if(userId != null){
+            String json = String.format(
+                    "{\"action\":\"FeedMyList\", \"user_id\": \"%s\"}", userId
+            );
+            log.info(json);
+        }
         return feedList;
     }
 
@@ -87,7 +89,7 @@ public class FeedController {
         return likeDto;
     }
 
-    @PostMapping("like")
+    @GetMapping("like")
     public List<FeedDTO> getLike(@RequestParam("userId") String userId){
         List<FeedDTO> likeList = service.findLikedFeed(userId);
         String json = String.format(

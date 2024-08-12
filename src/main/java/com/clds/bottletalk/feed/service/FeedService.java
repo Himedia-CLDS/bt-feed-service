@@ -25,9 +25,15 @@ public class FeedService {
     }
 
     public List<FeedDTO> findAllFeed(String userId) {
-//        if(userId != null)
-
-        List<Feed> feedList = repository.findAll();
+        List<Feed> feedList;
+        if(userId == null){
+            System.out.println("userId: null!!!");
+            feedList = repository.findAll();
+        } else {
+            System.out.println("userId: " +userId);
+            feedList = repository.findByUserId(userId);
+        }
+        System.out.println("list: " +feedList);
         return feedList.stream().map(FeedDTO::fromEntity).collect(Collectors.toList());
     }
 
