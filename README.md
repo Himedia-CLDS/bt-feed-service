@@ -31,5 +31,5 @@ aws:
    | POST |/v1/feed/insert                |피드 작성|
    | PUT |/v1/feed/update  | 피드수정|
    | PUT| /v1/feed/delete                 | 피드 삭제     |
-   | put | /v1/feed/like                  | 피드 좋아요기능   |
+   | PUT | /v1/feed/like                  | 피드 좋아요기능   |
     | POST| /v1/feed/like                 |좋아요한 피드목록 조회|
