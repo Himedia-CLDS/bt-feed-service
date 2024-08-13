@@ -43,7 +43,9 @@ jobs:
         echo "  path-ec2: ${{ secrets.LOGBACK_SETTING_PATH_EC2 }}" >> src/main/resources/config.yml
 
     - name: Build with Gradle
-      run: sudo ./gradlew build -x test
+      run: |
+        chmod +x ./gradlew
+        ./gradlew build -x test
 
     - name: Upload to S3
       env:
