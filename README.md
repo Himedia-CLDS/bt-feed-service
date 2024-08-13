@@ -1,19 +1,6 @@
 # bt-feed-service
 
-1. config.yml
-  ```
-url: ~
-name: ~
-password: ~
-aws:
-  access-key-cognito: ~
-  secret-key-cognito: ~
-  cognito:
-    userPoolId: ~
-    region: ~
-  ```
-
-2. bootrun
+1. bootrun
 
 ```
     git clone
@@ -22,7 +9,7 @@ aws:
     ./gradlew bootrun
 ```
   
-3. api method
+2. api method
 
    | 메서드 | URL                                                    | 설명             |
    |-----|--------------------------------------------------------|----------------|
@@ -34,7 +21,7 @@ aws:
    | PUT | /v1/feed/like                  | 피드 좋아요기능   |
     | POST| /v1/feed/like                 |좋아요한 피드목록 조회|
 
-4. api 작동
+3. api 작동
    ```
      GET /v1/feed
      GET /v1/feed?userId=
