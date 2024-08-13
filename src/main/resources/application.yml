@@ -40,5 +40,5 @@ aws:
 
 jasypt:
     encryptor:
-        bean: "jasyptStringEncryptor"
-        key: "bottletalkkey"
+        bean: ${jasypt.encryptor.bean}
+        key: ${jasypt.encryptor.key}
