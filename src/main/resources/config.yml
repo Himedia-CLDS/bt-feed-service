@@ -1,0 +1,13 @@
+url:
+name:
+password:
+origin: "http://localhost:3000"
+aws:
+  access-key-cognito: ""
+  secret-key-cognito: ""
+  cognito:
+    userPoolId: ""
+    region: ""
+logback-setting:
+  path-local: ""
+  path-ec2: ""

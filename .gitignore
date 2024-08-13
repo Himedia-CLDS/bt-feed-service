@@ -4,7 +4,6 @@
 build/
 Log/
 logs/
-src/main/resources/config.yml
 .DS_Store
 .env
 .class
