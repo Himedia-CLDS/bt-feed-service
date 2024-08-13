@@ -9,6 +9,7 @@ public class FeedDTO {
 
     private Long id;
     private String userId;
+    private String userEmail;
     private String content;
     private String orgImgName;
     private String reImgName;
@@ -21,6 +22,7 @@ public class FeedDTO {
     public FeedDTO(Feed feed){
         this.id = feed.getId();
         this.userId = feed.getUserId();
+        this.userEmail = feed.getUserEmail();
         this.content = feed.getContent();
         this.orgImgName = feed.getOrgImgName();
         this.reImgName = feed.getReImgName();

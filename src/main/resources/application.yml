@@ -8,12 +8,7 @@ spring:
         username: ${name}
         password: ${password}
         driver-class-name: com.mysql.cj.jdbc.Driver
-    aws:
-        access-key-cognito: ${aws.access-key-cognito}
-        secret-key-cognito: ${aws.secret-key-cognito}
-        cognito:
-            userPoolId: ${aws.cognito.userPoolId}
-            region: ${aws.cognito.region}
+
     resource:
         origin: ${origin}
 
@@ -35,3 +30,15 @@ spring:
                 show_sql: true
                 format_sql: true
                 dialect: org.hibernate.dialect.MySQLDialect
+
+aws:
+    access-key-cognito: ${aws.access-key-cognito}
+    secret-key-cognito: ${aws.secret-key-cognito}
+    cognito:
+        userPoolId: ${aws.cognito.userPoolId}
+        region: ${aws.cognito.region}
+
+jasypt:
+    encryptor:
+        bean: "jasyptStringEncryptor"
+        key: "bottletalkkey"

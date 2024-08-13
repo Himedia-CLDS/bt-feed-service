@@ -1,10 +1,12 @@
 package com.clds.bottletalk.feed.controller;
 
+import com.clds.bottletalk.common.JsonResult;
 import com.clds.bottletalk.config.FileConfig;
 import com.clds.bottletalk.feed.model.FeedDTO;
 import com.clds.bottletalk.feed.model.FeedLike;
 import com.clds.bottletalk.feed.service.FeedService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,7 +28,7 @@ public class FeedController {
 
 
     @GetMapping
-    public List<FeedDTO> getList(@RequestParam(name="userId", required = false) String userId){
+    public JsonResult getList(@RequestParam(name="userId", required = false) String userId){
         List<FeedDTO> feedList = service.findAllFeed(userId);
         if(userId != null){
             String json = String.format(
@@ -34,21 +36,34 @@ public class FeedController {
             );
             log.info(json);
         }
-        return feedList;
+        if(feedList != null){
+            return JsonResult.success(feedList);
+        } else {
+            return JsonResult.fail("불러오기 실패");
+        }
     }
 
     @PostMapping("insert")
-    public void insert(@RequestPart FeedDTO feedDTO, @RequestPart MultipartFile file) throws Exception {
+    public JsonResult insert(@RequestPart FeedDTO feedDTO, @RequestPart(required = false) MultipartFile file) throws Exception {
         feedDTO.setCreatedAt(LocalDateTime.now());
-        feedDTO.setReImgName(fileConfig.saveFile(feedDTO.getUserId(), file).getName());
-        feedDTO.setOrgImgName(file.getOriginalFilename());
+        if(file != null){
+            feedDTO.setReImgName(fileConfig.saveFile(feedDTO.getUserId(), file).getName());
+            feedDTO.setOrgImgName(file.getOriginalFilename());
+        }
+
         service.insertFeed(feedDTO);
         String json = String.format("{\"action\":\"FeedInsert\", \"user_id\": \"%s\"}", feedDTO.getUserId());
         log.info(json);
+
+        if(feedDTO.getCreatedAt() != null){
+            return JsonResult.success("피드작성 성공");
+        } else {
+            return JsonResult.fail("피드작성 실패");
+        }
     }
 
     @PutMapping("update")
-    public FeedDTO update(@RequestPart FeedDTO feedDTO, @RequestPart MultipartFile file) throws Exception{
+    public JsonResult update(@RequestPart FeedDTO feedDTO, @RequestPart MultipartFile file) throws Exception{
         FeedDTO feed = service.findFeed(feedDTO.getId(), feedDTO.getUserId());
         if(file != null){
             fileConfig.deleteFile(feed.getReImgName());
@@ -56,17 +71,22 @@ public class FeedController {
             feedDTO.setOrgImgName(file.getOriginalFilename());
         }
 
-        service.updateFeed(feedDTO);
+        LocalDateTime updataAt =  service.updateFeed(feedDTO);
         String json = String.format(
                 "{\"action\":\"FeedUpdate\",\"feed_id\":\"%d\" \"user_id\": \"%s\"}",
                 feedDTO.getId(), feedDTO.getUserId()
         );
         log.info(json);
-        return null;
+
+        if(updataAt != null){
+            return JsonResult.success(updataAt);
+        } else {
+            return JsonResult.fail("업데이트 실패");
+        }
     }
 
     @PutMapping("delete")
-    public void delete(@RequestBody FeedDTO feedDTO) throws Exception{
+    public JsonResult delete(@RequestBody FeedDTO feedDTO) throws Exception{
         String isDelete = "";
         FeedDTO deleteFeed = service.deleteFeed(feedDTO);
         if(deleteFeed.getReImgName() != null){
@@ -79,6 +99,8 @@ public class FeedController {
                 feedDTO.getId(), feedDTO.getUserId(), isDelete
         );
         log.info(json);
+
+        return JsonResult.success("삭제완료");
     }
 
     @PutMapping("like")
@@ -93,12 +115,16 @@ public class FeedController {
     }
 
     @GetMapping("like")
-    public List<FeedDTO> getLike(@RequestParam("userId") String userId){
+    public JsonResult getLike(@RequestParam("userId") String userId){
         List<FeedDTO> likeList = service.findLikedFeed(userId);
         String json = String.format(
                 "{\"action\":\"%s\",\"userId\":\"%s\"}","LikeAllFeed", userId
         );
         log.info(json);
-        return likeList;
+        if(likeList != null){
+            return JsonResult.success(likeList);
+        } else {
+            return JsonResult.fail("불러올 리스트 없음");
+        }
     }
 }

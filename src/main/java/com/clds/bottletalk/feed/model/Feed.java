@@ -22,6 +22,7 @@ public class Feed {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String userId;
+    private String userEmail;
     private String content;
     private String orgImgName;
     private String reImgName;
@@ -32,6 +33,7 @@ public class Feed {
     public Feed(FeedDTO feedDTO) {
         this.id = feedDTO.getId();
         this.userId = feedDTO.getUserId();
+        this.userEmail = feedDTO.getUserEmail();
         this.content = feedDTO.getContent();
         this.orgImgName = feedDTO.getOrgImgName();
         this.reImgName = feedDTO.getReImgName();

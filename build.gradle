@@ -35,6 +35,11 @@ dependencies {
 	// Logstash Logback Encoder
 	implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
 	implementation 'org.codehaus.janino:janino:3.1.6'
+
+	implementation 'com.amazonaws:aws-java-sdk-cognitoidp:1.12.529'
+
+	// 암호화
+	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
 }
 
 tasks.named('test') {
