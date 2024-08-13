@@ -19,17 +19,6 @@
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
             <pattern>${log_pattern}</pattern>
         </encoder>
-        <!--  필터링  -->
-        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
-            <evaluator>
-                <expression>
-                    import ch.qos.logback.classic.spi.ILoggingEvent;
-                    return event.getMessage().contains("Feed");
-                </expression>
-            </evaluator>
-            <OnMismatch>DENY</OnMismatch>
-            <OnMatch>ACCEPT</OnMatch>
-        </filter>
     </appender>
     <root level="info">
         <appender-ref ref="RollingFileAppender" />
