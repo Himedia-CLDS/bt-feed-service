@@ -41,7 +41,11 @@ jobs:
         echo "logback-setting: " >> src/main/resources/config.yml
         echo "  path-local: ${{ secrets.LOGBACK_SETTING_PATH_LOCAL }}" >> src/main/resources/config.yml
         echo "  path-ec2: ${{ secrets.LOGBACK_SETTING_PATH_EC2 }}" >> src/main/resources/config.yml
-
+        echo "jasypt: " >> src/main/resources/config.yml
+        echo "  encryptor: " >> src/main/resources/config.yml
+        echo "    bean: ${{ secrets.JASYPT_ENCRYPTOR_BEAN }}" >> src/main/resources/config.yml
+        echo "    key: ${{ secrets.JASYPT_ENCRYPTOR_KEY }}" >> src/main/resources/config.yml
+        
     - name: Build with Gradle
       run: |
         chmod +x ./gradlew
