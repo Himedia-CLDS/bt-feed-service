@@ -44,7 +44,6 @@ jobs:
 
     - name: Build with Gradle
       run: ./gradlew build -x test
-      working-directory: bt-feed-service
 
     - name: Upload to S3
       env:
