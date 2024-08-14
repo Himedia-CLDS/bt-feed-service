@@ -1,13 +1,20 @@
-url:
-name:
-password:
+url: jdbc:mysql://database-1.cvmakeaksuml.ap-northeast-2.rds.amazonaws.com:3306/feed_schema
+name: admin
+password: test3306
 origin: "http://localhost:3000"
+
 aws:
-  access-key-cognito: ""
-  secret-key-cognito: ""
+  access-key-cognito: "AKIA4MTWJM3NJAVABRGS"
+  secret-key-cognito: "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"
   cognito:
-    userPoolId: ""
-    region: ""
+    userPoolId: "ap-northeast-2_S8Wt9iz3q"
+    region: "ap-northeast-2"
+
 logback-setting:
-  path-local: ""
-  path-ec2: ""
+  path-local: "C:\\himedia\\logs\\feed\\"
+  path-ec2: "/home/ec2-user/bottle-talk/logs/feed/"
+
+jasypt:
+  encryptor:
+    bean: "jasyptStringEncryptor"
+    key: "bottletalkkey"
