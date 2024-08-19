@@ -13,7 +13,7 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
 
     @Query(value = "SELECT f.created_at, f.id, f.user_id, f.content, f.org_img_name, f.re_img_name, f.user_email,  " +
             " f.deleted_at, f.updated_at, " +
-            " COALESCE(COUNT(NULLIF(l.is_liked, 0)), 0) AS like_count," +
+//            " COALESCE(COUNT(NULLIF(l.is_liked, 0)), 0) AS like_count," + //추후 추가예정
             " COALESCE(NULLIF(l.is_liked, 0),l.is_liked, 0) AS is_liked " +
             " FROM feed f LEFT JOIN feed_like l " +
             " ON f.id = l.feed_id " +
@@ -26,7 +26,7 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
 
     @Query(value = "SELECT f.created_at, f.id, f.user_id, f.content, f.org_img_name, f.re_img_name, f.user_email,  " +
             " f.deleted_at, f.updated_at, " +
-            " COALESCE(COUNT(NULLIF(l.is_liked, 0)), 0) AS like_count, " +
+//            " COALESCE(COUNT(NULLIF(l.is_liked, 0)), 0) AS like_count, " + //추후 추가예정
             " COALESCE(NULLIF(l.is_liked, 0),l.is_liked, 0) AS is_liked " +
             " FROM feed f LEFT JOIN feed_like l " +
             " ON f.id = l.feed_id " +
@@ -40,7 +40,7 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
 
     @Query(value = "SELECT f.created_at, f.id, f.user_id, f.content, f.org_img_name, f.re_img_name, f.user_email, " +
             " f.deleted_at, updated_at, " +
-            " COALESCE(COUNT(NULLIF(l.is_liked, 0)), 0) AS like_count," +
+//            " COALESCE(COUNT(NULLIF(l.is_liked, 0)), 0) AS like_count," + //추후 추가예정
             " COALESCE(NULLIF(l.is_liked, 0),l.is_liked, 0) AS is_liked " +
             " FROM feed f LEFT JOIN feed_like l " +
             " ON f.id = l.feed_id " +
