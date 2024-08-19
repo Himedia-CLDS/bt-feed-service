@@ -11,7 +11,7 @@ import java.util.UUID;
 @Service
 public class FileConfig {
 
-    private String linuxPath = "home" + File.separator + "ec2-user" + File.separator + "bottletalk" + File.separator + "files";
+    private String linuxPath = "/home" + File.separator + "ec2-user" + File.separator + "bottletalk" + File.separator + "files";
     private String windowsPath = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static" + File.separator + "files";
 
     public File saveFile(String userId, MultipartFile file) throws Exception {
