@@ -3,7 +3,6 @@ package com.clds.bottletalk.feed.controller;
 import com.clds.bottletalk.common.JsonResult;
 import com.clds.bottletalk.config.FileConfig;
 import com.clds.bottletalk.feed.model.FeedDTO;
-import com.clds.bottletalk.feed.model.FeedLike;
 import com.clds.bottletalk.feed.model.FeedLikeDTO;
 import com.clds.bottletalk.feed.service.FeedService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.List;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("v1/feed")
@@ -25,7 +27,7 @@ public class FeedController {
         this.fileConfig = fileConfig;
     }
 
-
+    @Operation(summary = "피드리스트", description = "전체/유저별 피드리스트 출력")
     @GetMapping
     public JsonResult getList(@RequestParam(name="userId", required = false) String userId){
         List<FeedDTO> feedList = service.findAllFeed(userId);
@@ -42,6 +44,11 @@ public class FeedController {
         }
     }
 
+    @Operation(summary = "피드작성")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "피드작성 성공"),
+            @ApiResponse(responseCode = "400", description = "피드작성 실패")
+    })
     @PostMapping("insert")
     public JsonResult insert(@RequestPart FeedDTO feedDTO, @RequestPart(required = false) MultipartFile file) throws Exception {
         feedDTO.setCreatedAt(LocalDateTime.now());
@@ -61,6 +68,7 @@ public class FeedController {
         }
     }
 
+    @Operation(summary = "수정할 피드 불러오기")
     @PutMapping("getfeed")
     public JsonResult update(@RequestBody FeedDTO feedDTO){
         System.out.println("getfeed");
@@ -72,6 +80,11 @@ public class FeedController {
         }
     }
 
+    @Operation(summary = "피드수정")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "피드수정 성공"),
+            @ApiResponse(responseCode = "400", description = "피드수정 실패")
+    })
     @PostMapping("update")
     public JsonResult update(@RequestPart FeedDTO feedDTO, @RequestPart(required = false) MultipartFile selectedFile) throws Exception{
         System.out.println(feedDTO + "\n" + selectedFile);
@@ -95,7 +108,12 @@ public class FeedController {
             return JsonResult.fail("업데이트 실패");
         }
     }
-
+    
+    @Operation(summary = "피드삭제")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "피드삭제 성공"),
+            @ApiResponse(responseCode = "400", description = "피드삭제 실패")
+    })
     @PutMapping("delete")
     public JsonResult delete(@RequestBody FeedDTO feedDTO) throws Exception{
         System.out.println("DELETE: "+ feedDTO);
@@ -115,6 +133,11 @@ public class FeedController {
         return JsonResult.success("삭제완료");
     }
 
+    @Operation(summary = "좋아요")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "좋아요 성공"),
+            @ApiResponse(responseCode = "400", description = "좋아요 실패")
+    })
     @PutMapping("like")
     public JsonResult like(@RequestBody FeedLikeDTO feedLike){
         FeedLikeDTO likeDto = service.likeFeed(feedLike);
@@ -127,6 +150,11 @@ public class FeedController {
 //        return null;
     }
 
+    @Operation(summary = "좋아요한 피드 불러오기")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "좋아요 불러오기 성공"),
+            @ApiResponse(responseCode = "400", description = "좋아요 불러오기 실패")
+    })
     @GetMapping("like")
     public JsonResult getLike(@RequestParam("userId") String userId){
         List<FeedDTO> likeList = service.findLikedFeed(userId);

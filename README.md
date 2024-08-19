@@ -35,3 +35,7 @@
      PUT /v1/feed/like
          JSON : {"feedId":"", "userId":""}
    ```
+
+4. 스웨거
+   - http://localhost:8080/swagger-ui/index.html
+   - Json: http://localhost:8080/v3/api-docs
