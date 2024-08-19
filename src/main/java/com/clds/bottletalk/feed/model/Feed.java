@@ -1,13 +1,7 @@
 package com.clds.bottletalk.feed.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Feed {
 
     @Id
@@ -29,6 +24,10 @@ public class Feed {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
+    private boolean isLiked;
+
+    @Transient
+    private Long likeCount;
 
     public Feed(FeedDTO feedDTO) {
         this.id = feedDTO.getId();
@@ -38,6 +37,8 @@ public class Feed {
         this.orgImgName = feedDTO.getOrgImgName();
         this.reImgName = feedDTO.getReImgName();
         this.createdAt = feedDTO.getCreatedAt();
+        this.isLiked = feedDTO.isLiked();
+        this.likeCount = feedDTO.getLikeCount();
     }
 
     public void updateFeed(String content, String orgImgName, String reImgName, LocalDateTime updatedAt){
@@ -55,13 +56,4 @@ public class Feed {
         return new Feed(feedDTO);
     }
 
-    @Override
-    public String toString() {
-        return "Feed{" +
-                "id=" + id +
-                ", userId='" + userId + '\'' +
-                ", content='" + content + '\'' +
-                ", reImgName='" + reImgName + '\'' +
-                '}';
-    }
 }

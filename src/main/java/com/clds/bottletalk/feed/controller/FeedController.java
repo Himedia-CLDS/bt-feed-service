@@ -4,6 +4,7 @@ import com.clds.bottletalk.common.JsonResult;
 import com.clds.bottletalk.config.FileConfig;
 import com.clds.bottletalk.feed.model.FeedDTO;
 import com.clds.bottletalk.feed.model.FeedLike;
+import com.clds.bottletalk.feed.model.FeedLikeDTO;
 import com.clds.bottletalk.feed.service.FeedService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -60,13 +61,25 @@ public class FeedController {
         }
     }
 
-    @PutMapping("update")
-    public JsonResult update(@RequestPart FeedDTO feedDTO, @RequestPart MultipartFile file) throws Exception{
+    @PutMapping("getfeed")
+    public JsonResult update(@RequestBody FeedDTO feedDTO){
+        System.out.println("getfeed");
+        FeedDTO feed = service.getUpdateFeed(feedDTO);
+        if(feed != null){
+            return JsonResult.success(feed);
+        } else {
+            return JsonResult.fail("피드없음");
+        }
+    }
+
+    @PostMapping("update")
+    public JsonResult update(@RequestPart FeedDTO feedDTO, @RequestPart(required = false) MultipartFile selectedFile) throws Exception{
+        System.out.println(feedDTO + "\n" + selectedFile);
         FeedDTO feed = service.findFeed(feedDTO.getId(), feedDTO.getUserId());
-        if(file != null){
+        if(selectedFile != null){
             fileConfig.deleteFile(feed.getReImgName());
-            feedDTO.setReImgName(fileConfig.saveFile(feed.getUserId(), file).getName());
-            feedDTO.setOrgImgName(file.getOriginalFilename());
+            feedDTO.setReImgName(fileConfig.saveFile(feed.getUserId(), selectedFile).getName());
+            feedDTO.setOrgImgName(selectedFile.getOriginalFilename());
         }
 
         LocalDateTime updataAt =  service.updateFeed(feedDTO);
@@ -85,16 +98,17 @@ public class FeedController {
 
     @PutMapping("delete")
     public JsonResult delete(@RequestBody FeedDTO feedDTO) throws Exception{
-        String isDelete = "";
+        System.out.println("DELETE: "+ feedDTO);
+        String deleteStr = "";
         FeedDTO deleteFeed = service.deleteFeed(feedDTO);
         if(deleteFeed.getReImgName() != null){
-            isDelete = String.format("%b", fileConfig.deleteFile(deleteFeed.getReImgName()));
+            deleteStr = String.format("%b", fileConfig.deleteFile(deleteFeed.getReImgName()));
         } else {
-            isDelete = "삭제할 파일 없음";
+            deleteStr = "삭제할 파일 없음";
         }
         String json = String.format(
                 "{\"action\":\"DeleteFeed\", \"feed_id\":\"%d\", \"user_id\": \"%s\", \"deleteFile\": \"%b\"}",
-                feedDTO.getId(), feedDTO.getUserId(), isDelete
+                feedDTO.getId(), feedDTO.getUserId(), deleteStr
         );
         log.info(json);
 
@@ -102,14 +116,15 @@ public class FeedController {
     }
 
     @PutMapping("like")
-    public FeedLike like(@RequestBody FeedLike feedLike){
-        FeedLike likeDto = service.likeFeed(feedLike);
+    public JsonResult like(@RequestBody FeedLikeDTO feedLike){
+        FeedLikeDTO likeDto = service.likeFeed(feedLike);
         String json = String.format(
                 "{\"action\":\"%s\",\"feed_id\":\"%d\",\"user_id\":\"%s\"\"is_liked\":\"%b\"}",
                 "FeedLike", feedLike.getFeedId(), feedLike.getUserId(), likeDto.isLiked()
         );
         log.info(json);
-        return likeDto;
+        return JsonResult.success(likeDto);
+//        return null;
     }
 
     @GetMapping("like")

@@ -4,6 +4,7 @@ import com.clds.bottletalk.common.AWSCognitoService;
 import com.clds.bottletalk.feed.model.Feed;
 import com.clds.bottletalk.feed.model.FeedDTO;
 import com.clds.bottletalk.feed.model.FeedLike;
+import com.clds.bottletalk.feed.model.FeedLikeDTO;
 import com.clds.bottletalk.feed.repository.FeedLikeRepository;
 import com.clds.bottletalk.feed.repository.FeedRepository;
 import jakarta.transaction.Transactional;
@@ -35,7 +36,6 @@ public class FeedService {
         } else {
             feedList = repository.findFeedsByUserId(userId);
         }
-        System.out.println("list: " +feedList);
         return feedList.stream().map(FeedDTO::fromEntity).collect(Collectors.toList());
     }
 
@@ -45,17 +45,20 @@ public class FeedService {
     }
 
     public String insertFeed(FeedDTO feedDTO) {
-
         Map<String, String> userInfo = awsCognitoService.getUserInfoFromCognito(feedDTO.getUserId());
         String userEmail = userInfo.get("email");
         feedDTO.setUserEmail(userEmail);
-        System.out.println(feedDTO);
         if(userEmail != null){
             repository.save(Feed.fromDTO(feedDTO));
             return userEmail;
         } else {
             return null;
         }
+    }
+
+    public FeedDTO getUpdateFeed(FeedDTO feedDTO) {
+        Feed feed = repository.findByIdAndUserId(feedDTO.getId(), feedDTO.getUserId());
+        return FeedDTO.fromEntity(feed);
     }
 
     @Transactional
@@ -74,15 +77,21 @@ public class FeedService {
     }
 
     @Transactional
-    public FeedLike likeFeed(FeedLike likeDto) {
-        FeedLike tempDto = likeRepository.findByFeedIdAndUserId(likeDto.getFeedId(), likeDto.getUserId());
-        if(tempDto.isLiked()){
-            tempDto.setLiked(false);
+    public FeedLikeDTO likeFeed(FeedLikeDTO likeDto) {
+        FeedLike tempLike = likeRepository.findByFeedIdAndUserId(likeDto.getFeedId(), likeDto.getUserId());
+        if(tempLike == null){
+            likeDto.setLiked(true);
+            likeRepository.save(FeedLike.fromFeedLikeDTO(likeDto));
+            return likeDto;
         } else {
-            tempDto.setLiked(true);
+            if(tempLike.isLiked()){
+                tempLike.updateIsLiked(false);
+            } else {
+                tempLike.updateIsLiked(true);
+            }
+            likeRepository.save(tempLike);
+            return new FeedLikeDTO(tempLike);
         }
-        likeRepository.save(tempDto);
-        return tempDto;
     }
 
     public List<FeedDTO> findLikedFeed(String userId) {

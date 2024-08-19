@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @Builder
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @IdClass(FeedLikeId.class)
@@ -20,5 +20,19 @@ public class FeedLike implements Serializable {
     @Column(name = "user_id")
     private String userId;
     private boolean isLiked; //1-참, 0-거짓
+
+    public FeedLike(FeedLikeDTO feedLikeDTO){
+        this.feedId = feedLikeDTO.getFeedId();
+        this.userId = feedLikeDTO.getUserId();
+        this.isLiked = feedLikeDTO.isLiked();
+    }
+
+    public void updateIsLiked(boolean isLiked) {
+        this.isLiked = isLiked;
+    }
+
+    public static FeedLike fromFeedLikeDTO(FeedLikeDTO feedLikeDTO){
+        return new FeedLike(feedLikeDTO);
+    }
 
 }
