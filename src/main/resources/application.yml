@@ -1,12 +1,25 @@
 spring:
     config:
-        import: "classpath:datasource.yml"
+        import:
+            - "classpath:config.yml"
     datasource:
         url: ${url}
 #       username 사용 시 host name이 전달됨... name으로 명시
         username: ${name}
         password: ${password}
         driver-class-name: com.mysql.cj.jdbc.Driver
+
+    resource:
+        origin: ${origin}
+
+    servlet:
+        multipart:
+            maxFileSize: 10MB # 파일 하나의 최대 크기
+            maxRequestSize: 30MB  # 한 번에 최대 업로드 가능 용량
+
+    logback-setting:
+        path-local: ${logback-setting.path-local}
+        path-ec2: ${logback-setting.path-ec2}
 
     jpa:
         hibernate:
@@ -17,3 +30,15 @@ spring:
                 show_sql: true
                 format_sql: true
                 dialect: org.hibernate.dialect.MySQLDialect
+
+aws:
+    access-key-cognito: ${aws.access-key-cognito}
+    secret-key-cognito: ${aws.secret-key-cognito}
+    cognito:
+        userPoolId: ${aws.cognito.userPoolId}
+        region: ${aws.cognito.region}
+
+jasypt:
+    encryptor:
+        bean: ${jasypt.encryptor.bean}
+        key: ${jasypt.encryptor.key}

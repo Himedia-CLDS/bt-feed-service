@@ -1,10 +1,11 @@
-.idea/
+../../../.idea/
 .vscode/
 .gradle/
 build/
 Log/
 logs/
-datasource.yml
+src/main/resources/config.yml
 .DS_Store
 .env
 .class
+static/

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 스프링부트제공 기본 로깅설정 -->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <property name="log_pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
+    <springProperty name="path_local" source="spring.logback-setting.path-local" />
+    <springProperty name="path_ec2" source="spring.logback-setting.path-ec2" />
+
+    <!-- Rolling File Appender -->
+    <appender name="RollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${path_ec2}feed_service-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 파일 최대 크기 -->
+            <maxFileSize>10MB</maxFileSize>
+            <!-- 최대 보관할 기간 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <pattern>${log_pattern}</pattern>
+        </encoder>
+    </appender>
+    <root level="info">
+        <appender-ref ref="RollingFileAppender" />
+    </root>
+</configuration>

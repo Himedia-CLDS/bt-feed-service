@@ -1,0 +1,60 @@
+name: Build and Upload to S3
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '17'
+
+    - name: Cache Gradle packages
+      uses: actions/cache@v2
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: ${{ runner.os }}-gradle
+
+    - name: Create config.yml
+      run: |
+        echo "url: ${{ secrets.URL }}" > src/main/resources/config.yml
+        echo "name: ${{ secrets.NAME }}" >> src/main/resources/config.yml
+        echo "password: ${{ secrets.PASSWORD }}" >> src/main/resources/config.yml
+        echo "origin: ${{ secrets.ORIGIN }}" >> src/main/resources/config.yml
+        echo "aws: " >> src/main/resources/config.yml
+        echo "  access-key-cognito: ${{ secrets.AWS_ACCESS_KEY_COGNITO }}" >> src/main/resources/config.yml
+        echo "  secret-key-cognito: ${{ secrets.AWS_SECRET_KEY_COGNITO }}" >> src/main/resources/config.yml
+        echo "  cognito: " >> src/main/resources/config.yml
+        echo "    userPoolId: ${{ secrets.AWS_COGNITO_USER_POOL_ID }}" >> src/main/resources/config.yml
+        echo "    region: ${{ secrets.AWS_COGNITO_REGION }}" >> src/main/resources/config.yml
+        echo "logback-setting: " >> src/main/resources/config.yml
+        echo "  path-local: ${{ secrets.LOGBACK_SETTING_PATH_LOCAL }}" >> src/main/resources/config.yml
+        echo "  path-ec2: ${{ secrets.LOGBACK_SETTING_PATH_EC2 }}" >> src/main/resources/config.yml
+        echo "jasypt: " >> src/main/resources/config.yml
+        echo "  encryptor: " >> src/main/resources/config.yml
+        echo "    bean: ${{ secrets.JASYPT_ENCRYPTOR_BEAN }}" >> src/main/resources/config.yml
+        echo "    key: ${{ secrets.JASYPT_ENCRYPTOR_KEY }}" >> src/main/resources/config.yml
+        
+    - name: Build with Gradle
+      run: |
+        chmod +x ./gradlew
+        ./gradlew build -x test
+
+    - name: Upload to S3
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_PRIVATE_ACCESS_KEY }}
+        AWS_DEFAULT_REGION : ap-northeast-2
+      run: |
+        aws s3 cp build/libs/bottletalk-0.0.1-SNAPSHOT.jar s3://${{ secrets.AWS_S3_NAME }}/feed-api/
