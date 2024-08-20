@@ -147,7 +147,6 @@ public class FeedController {
         );
         log.info(json);
         return JsonResult.success(likeDto);
-//        return null;
     }
 
     @Operation(summary = "좋아요한 피드 불러오기")

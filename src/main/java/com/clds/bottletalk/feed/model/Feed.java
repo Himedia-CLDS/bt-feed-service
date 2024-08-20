@@ -24,6 +24,8 @@ public class Feed {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
+
+    @Transient
     private boolean isLiked;
 
     @Transient
@@ -37,7 +39,6 @@ public class Feed {
         this.orgImgName = feedDTO.getOrgImgName();
         this.reImgName = feedDTO.getReImgName();
         this.createdAt = feedDTO.getCreatedAt();
-        this.isLiked = feedDTO.isLiked();
         this.likeCount = feedDTO.getLikeCount();
     }
 

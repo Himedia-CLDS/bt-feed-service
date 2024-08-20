@@ -3,8 +3,6 @@ package com.clds.bottletalk.feed;
 import com.clds.bottletalk.feed.model.FeedDTO;
 import com.clds.bottletalk.feed.model.FeedLikeDTO;
 import com.clds.bottletalk.feed.service.FeedService;
-import com.clds.bottletalk.config.FileConfig;
-import com.clds.bottletalk.common.JsonResult;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +30,6 @@ public class FeedTest {
 
     @MockBean
     private FeedService feedService;
-
-    @MockBean
-    private FileConfig fileConfig;
 
     @Test
     public void testGetList() throws Exception {

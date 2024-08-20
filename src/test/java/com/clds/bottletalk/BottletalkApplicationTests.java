@@ -14,14 +14,4 @@ class BottletalkApplicationTests {
 	void contextLoads() {
 	}
 
-	private static Stream<Arguments> getUser(){
-		return Stream.of(
-				Arguments.of(
-						new FeedDTO(
-
-						)
-				)
-		);
-	}
-
 }
