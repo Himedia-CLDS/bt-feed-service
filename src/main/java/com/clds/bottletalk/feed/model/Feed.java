@@ -39,7 +39,7 @@ public class Feed {
         this.orgImgName = feedDTO.getOrgImgName();
         this.reImgName = feedDTO.getReImgName();
         this.createdAt = feedDTO.getCreatedAt();
-        this.likeCount = feedDTO.getLikeCount();
+        this.isLiked = feedDTO.isLiked();
     }
 
     public void updateFeed(String content, String orgImgName, String reImgName, LocalDateTime updatedAt){

@@ -15,6 +15,7 @@ public class FeedDTO {
     private String reImgName;
     private LocalDateTime createdAt;
 
+    private boolean isLiked;
     private Long likeCount;
 
     public FeedDTO(){
@@ -29,7 +30,7 @@ public class FeedDTO {
         this.orgImgName = feed.getOrgImgName();
         this.reImgName = feed.getReImgName();
         this.createdAt = feed.getCreatedAt();
-        this.likeCount = feed.getLikeCount();
+        this.isLiked = feed.isLiked();
     }
 
     public static FeedDTO fromEntity(Feed feed){
